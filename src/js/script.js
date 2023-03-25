@@ -8,6 +8,10 @@
     },
     containerOf: {
       booksList: '.books-list', // klasa books-list w html
+    },
+    book: {
+      name: '.boook__name',
+      cover: '.book__image',
     }
   };
   const templates = {
@@ -22,7 +26,7 @@
 
     for (const book of dataSource.books){
       const generatedHTML = templates.bookList(book); // html dla każdej książki(zwykły string)
-      console.log('bookhtml',generatedHTML)
+      //console.log('bookhtml',generatedHTML);
       //Kod HTML to jednak zwykły tekst, a my potrzebujemy elementu DOM, który będziemy w stanie naprawdę "wcisnąć" gdzieś na naszą stronę. Najlepiej zapamiętaj to tak: HTML to zwykły string, a element DOM to obiekt wygenerowany przez przeglądarkę na podstawie kodu HTML. Obiekt, który ma właściwości (np. innerHTML czy metody (np. getAttribute).
       //JS nie ma wbudowanej metody, która służy do tego celu – dlatego skorzystamy z jednej z funkcji zawartych w obiekcie utils. Przygotowaliśmy go dla Ciebie, aby usprawnić nam pracę nad tym projektem. W tym wypadku użyjemy metody utils.createDOMFromHTML. 
         
@@ -31,11 +35,33 @@
       /*find container of book list*/
       
       const booksContainer = document.querySelector(select.containerOf.booksList);
-      console.log('container bookList',booksContainer)
+      //console.log('container bookList',booksContainer);
       /*add element book to container of books List */
       booksContainer.appendChild(thisBook.element);
     }
   }
+  
+
+  const favoriteBooks = [];
+  console.log(favoriteBooks);
+  function initActions(){ 
+    //wszystkie elementy .book_image
+    const booksCover=document.querySelectorAll(select.book.cover);
+    
+    for(let  cover of booksCover){
+      cover.addEventListener('dblclick',function(event){
+        event.preventDefault();
+        cover.classList.add('favorite');
+        const bookId = cover.getAttribute('data-id');
+        favoriteBooks.push(bookId);
+        console.log('bookId', bookId);
+        
+        
+      });
+    }
+  }
+  
   renderBookList();
+  initActions();
 
 }

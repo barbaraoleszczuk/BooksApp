@@ -43,33 +43,28 @@
   
 
   const favoriteBooks = [];
-  console.log(favoriteBooks);
+  
   function initActions(){ 
     //wszystkie elementy .book_image 
     const booksCover=document.querySelectorAll(select.book.cover);
-    
+
     for(let  cover of booksCover){
       cover.addEventListener('dblclick',function(event){
         event.preventDefault();
         const bookId = cover.getAttribute('data-id');
         if (favoriteBooks.includes(bookId)){
           cover.classList.remove('favorite');
-          favoriteBooks.splice(bookId);
+          favoriteBooks.splice(favoriteBooks.indexOf(bookId), 1);
         }
-        if (!favoriteBooks.includes(bookId)){
+        else {
           cover.classList.add('favorite');
           favoriteBooks.push(bookId);
         }
         
-        
-        console.log('bookId', bookId);
-        
-        
       });
     }
   }
-  
   renderBookList();
   initActions();
-
+  console.log(favoriteBooks);
 }

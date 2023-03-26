@@ -45,15 +45,23 @@
   const favoriteBooks = [];
   console.log(favoriteBooks);
   function initActions(){ 
-    //wszystkie elementy .book_image
+    //wszystkie elementy .book_image 
     const booksCover=document.querySelectorAll(select.book.cover);
     
     for(let  cover of booksCover){
       cover.addEventListener('dblclick',function(event){
         event.preventDefault();
-        cover.classList.add('favorite');
         const bookId = cover.getAttribute('data-id');
-        favoriteBooks.push(bookId);
+        if (favoriteBooks.includes(bookId)){
+          cover.classList.remove('favorite');
+          favoriteBooks.splice(bookId);
+        }
+        if (!favoriteBooks.includes(bookId)){
+          cover.classList.add('favorite');
+          favoriteBooks.push(bookId);
+        }
+        
+        
         console.log('bookId', bookId);
         
         

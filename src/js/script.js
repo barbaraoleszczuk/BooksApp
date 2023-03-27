@@ -12,6 +12,7 @@
     book: {
       name: '.boook__name',
       cover: '.book__image',
+      form: '.filters',
     }
   };
   const templates = {
@@ -43,15 +44,18 @@
   
 
   const favoriteBooks = [];
-  
+  const filters = [];
+
   function initActions(){ 
     //wszystkie elementy .book_image 
     const booksCover=document.querySelectorAll(select.book.cover);
 
+    const booksForm = document.querySelector(select.book.form); //wszystkie formularze
+
     for(let  cover of booksCover){
       cover.addEventListener('dblclick',function(event){
         event.preventDefault();
-        if (event.target.offsetParent.classList.contains('book__image')){
+        if (event.target.offsetParent.classList.contains('book__image')){ //offsetParent jest ustawiony na najbliższy element nadrzędny, który jest pozycjonowany bezwzględnie
           const bookId = event.target.offsetParent.getAttribute('data-id');
           if (favoriteBooks.includes(bookId)){
             cover.classList.remove('favorite');
@@ -63,7 +67,40 @@
           }
         }
       });
-    
+    }
+    booksForm.addEventListener('click',function(event){
+      const filter = event.target;//target zwraca obiekt będący celem zdarzenia 
+      const checked = filter.checked;  //checked zwraca true, jeśli checkbox jest zaznaczony i false jeśli nie jest
+      if (filter.tagName == 'INPUT' && filter.type == 'checkbox' && filter.name == 'filter')
+        if (checked) {
+          filters.push(filter.value);
+        } 
+        else if (!checked) {
+          filters.splice(filters.indexOf(filter.value), 1);
+        }
+      filterBooks();
+    });
+  }
+  console.log('tablica filter', filters);
+  
+  function filterBooks(){                                                         
+    for (const book of dataSource.books){                                         
+      let shouldBeHidden = false;          // zmienna, która na starcie ma właściwość false, potrzebna do nadania/usunięcia klasy hidden
+      const imageCover = document.querySelector(  // Element .book__image dla book z dataSource.book
+        '.book__image[data-id="' + book.id + '"]'
+      );
+      for(const filter of filters){         
+        if(!book.details[filter]){       // czy filtr(details) danej książki NIE znajduje się w tablicy?                                    
+          shouldBeHidden = true;                                                  
+          break;                         // Przerwanie pętli
+        }
+      }
+      if(shouldBeHidden){                  //jeśli warunek jest spełniony(true)- nadajemy klasę .hidden                                       
+        imageCover.classList.add('hidden');                                 
+      } else {
+        imageCover.classList.remove('hidden');                                   
+        console.log('imageCover:', imageCover);
+      }
     }
   }
   renderBookList();

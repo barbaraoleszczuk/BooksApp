@@ -28,7 +28,7 @@
       thisBookList.renderBookList();
       thisBookList.initActions();
       thisBookList.filterBooks();
-      thisBookList.determineRatingBgc();
+      
     }
   
     
@@ -36,8 +36,8 @@
     getElements() {
       const thisBookList = this;
       thisBookList.booksContainer = document.querySelector(select.containerOf.booksList);
-      thisBookList.booksForm = document.querySelector(select.book.form); //wszystkie formularze
-      thisBookList.booksCover=document.querySelectorAll(select.book.cover);
+      thisBookList.booksForm = document.querySelector(select.book.form); //wszystkie formularze-filtry
+      thisBookList.booksCover=document.querySelectorAll(select.book.cover);//okładka
     }
     renderBookList(){
       const thisBookList = this;
@@ -46,8 +46,8 @@
 
       for (let book of dataSource.books){
 
-        const ratingBgc = thisBookList.determineRatingBgc(book.rating);// stała, która zwraca raiting-ocenę
-        const ratingWidth = 10 * ratingBgc;// szerokość paska
+        const ratingBgc = thisBookList.determineRatingBgc(book.rating);// stała, która zwraca kolor
+        const ratingWidth = 10 * book.rating;// szerokość paska
         book.ratingBgc = ratingBgc;
         book.ratingWidth = ratingWidth;
   
@@ -126,10 +126,10 @@
       thisBookList.ratingBgc = '';
       
 
-      if (rating < 6) thisBookList.ratingBgc = {background : ' linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)'};
-      else if (rating > 6 && rating <= 8) thisBookList.ratingBgc = {background :' linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)'};
-      else if (rating > 8 && rating <= 9) thisBookList.ratingBgc = {background : ' linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)'};
-      else if (rating > 9) thisBookList.ratingBgc = {background : ' linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)'};
+      if (rating < 6) thisBookList.ratingBgc = ' linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
+      else if (rating > 6 && rating <= 8) thisBookList.ratingBgc = ' linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';
+      else if (rating > 8 && rating <= 9) thisBookList.ratingBgc = ' linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
+      else if (rating > 9) thisBookList.ratingBgc = ' linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
 
       return thisBookList.ratingBgc;
     }
